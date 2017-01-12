@@ -1,2 +1,2 @@
-Ñ§Ï°scheme±àÒëÆ÷
+ï»¿å­¦ä¹ schemeç¼–è¯‘å™¨
 http://www.buildyourownlisp.com/
