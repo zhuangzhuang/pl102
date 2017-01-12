@@ -1,44 +1,20 @@
 #include <stdio.h>
 #include <math.h>
+#include <editline\readline.h>
 
-int add_together(int x, int y) {
-	int result = x + y;
-	return result;
-}
+static char input[2048];
 
-typedef struct {
-	float x;
-	float y;
-} point;
 
 int main(int argc, char** argv) {
-	int added = add_together(10, 18);
+	puts("Lispy Version 0.0.0.0.1");
+	puts("Press Ctrl+c to Exit\n");
 
-	point p;
-	p.x = 0.1;
-	p.y = 10.0;
-
-	float length = sqrt(p.x * p.x + p.y * p.y);
-
-	int x = 0;
-	if (x > 10 && x < 100) {
-		puts("x is greater than 10 and less than 100!");
+	while (1) {
+		char* input = readline("lispy>");
+		add_history(input);
+		printf("No you're a %s", input);
+		free(input);
 	}
-	else {
-		puts("x is less than 11 or greater than 99!");
-	}
-
-	int i = 10;
-	while (i > 0)
-	{	
-		puts("Look Iteration");
-		i = i - 1;
-	}
-
-	for (int i = 0; i < 10; i++) {
-		puts("Loop Iteration");
-	}
-
 
 	return 0;
 }
