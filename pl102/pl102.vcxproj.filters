@@ -13,10 +13,27 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\mpc">
+      <UniqueIdentifier>{6304e8da-207c-4806-a0d2-2a6d32a66cac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\mpc">
+      <UniqueIdentifier>{3ce132b7-3890-46be-90dd-3a04465a6024}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mpc\mpc.c">
+      <Filter>Source Files\mpc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="mpc\mpc.h">
+      <Filter>Header Files\mpc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="g.txt" />
   </ItemGroup>
 </Project>

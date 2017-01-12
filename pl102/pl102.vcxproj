@@ -146,6 +146,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
+    <ClCompile Include="mpc\mpc.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="mpc\mpc.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="g.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
