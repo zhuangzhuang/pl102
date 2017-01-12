@@ -19,47 +19,41 @@ const char* readfile(const char* filename) {
 	return res;
 }
 
-void handle_doge() {
-	mpc_parser_t* Adjective = mpc_or(4,
-		mpc_sym("wow"), mpc_sym("may"),
-		mpc_sym("so"), mpc_sym("such"));
-
-	mpc_parser_t* Noun = mpc_or(5,
-		mpc_sym("lisp"), mpc_sym("language"),
-		mpc_sym("book"), mpc_sym("build"),
-		mpc_sym("c")
-	);
-
-	mpc_parser_t* Phrase = mpc_and(2, mpcf_strfold,
-		Adjective, Noun, free);
-
-	mpc_parser_t* Doge = mpc_many(mpcf_strfold, Phrase);
-}
-
-void gen_doge() {
-	mpc_parser_t* Adjective = mpc_new("adjective");
-	mpc_parser_t* Noun = mpc_new("noun");
-	mpc_parser_t* Phrase = mpc_new("phrase");
-	mpc_parser_t* Doge = mpc_new("doge");
-
-	const char* gramar = readfile("g.txt");
-	mpca_lang(MPCA_LANG_DEFAULT, gramar, Adjective, Noun, Phrase, Doge);
-
-
-	mpc_cleanup(4, Adjective, Noun, Phrase, Doge);
-	free(gramar);
-}
 
 int main(int argc, char** argv) {
+	mpc_parser_t* Number = mpc_new("number");
+	mpc_parser_t* Operator = mpc_new("operator");
+	mpc_parser_t* Expr = mpc_new("expr");
+	mpc_parser_t* Lispy = mpc_new("lispy");
+
+	const char *grammar = readfile("lispy.g");
+	mpca_lang(MPCA_LANG_DEFAULT, grammar, Number, Operator, Expr, Lispy);
+
+
 	puts("Lispy Version 0.0.0.0.1");
 	puts("Press Ctrl+c to Exit\n");
+	
+	mpc_result_t r;
 
 	while (1) {
 		char* input = readline("lispy>");
 		add_history(input);
-		printf("No you're a %s", input);
+		//printf("No you're a %s", input);
+		
+		if (mpc_parse("<stdin>", input, Lispy, &r)) {
+			mpc_ast_print(r.output);
+			mpc_ast_delete(r.output);
+		}
+		else
+		{
+			mpc_err_print(r.error);
+			mpc_err_delete(r.error);
+		}
 		free(input);
 	}
+
+	mpc_cleanup(4, Number, Operator, Expr, Lispy);
+	free(grammar);
 	return 0;
 }
 

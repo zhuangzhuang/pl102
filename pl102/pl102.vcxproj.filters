@@ -36,4 +36,7 @@
   <ItemGroup>
     <Text Include="g.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="lispy.g" />
+  </ItemGroup>
 </Project>
