@@ -145,10 +145,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="lval.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="mpc\mpc.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lval.h" />
     <ClInclude Include="mpc\mpc.h" />
   </ItemGroup>
   <ItemGroup>

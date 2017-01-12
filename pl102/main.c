@@ -6,6 +6,9 @@
 #include <editline\readline.h>
 #include "mpc\mpc.h"
 
+#include "lval.h"
+
+
 const char* readfile(const char* filename) {
 	fpos_t size = 0;
 	char* res = 0;
@@ -35,31 +38,15 @@ int number_of_nodes(mpc_ast_t* t) {
 }
 
 
-long eval_op(long x, char* op, long y) {
-	if (strcmp(op, "+") == 0) {
-		return x + y;
-	}
-	if (strcmp(op, "-") == 0) {
-		return x - y;
-	}
-	if (strcmp(op, "*") == 0) {
-		return x * y;
-	}
-	if (strcmp(op, "/") == 0) {
-		return x / y;
-	}
-
-	return 0;
-}
-
-
-long eval(mpc_ast_t* t) {
+lval eval(mpc_ast_t* t) {
 	if (strstr(t->tag, "number")) {
-		return atoi(t->contents);
+		errno = 0;
+		long x = strtol(t->contents, NULL, 10);
+		return errno != ERANGE ? lval_num(x) : lval_err(LERR_BAD_NUM);
 	}
 
 	char* op = t->children[1]->contents;
-	long x = eval(t->children[2]);
+	lval x = eval(t->children[2]);
 	
 	int i = 3;
 	while (strstr(t->children[i]->tag, "expr")) {
@@ -95,8 +82,8 @@ int main(int argc, char** argv) {
 
 		if (mpc_parse("<stdin>", input, Lispy, &r)) {
 			//mpc_ast_print(r.output);
-			long result = eval(r.output);
-			printf("%li\n", result);
+			lval result = eval(r.output);
+			lval_println(result);
 			mpc_ast_delete(r.output);
 		}
 		else

@@ -27,10 +27,16 @@
     <ClCompile Include="mpc\mpc.c">
       <Filter>Source Files\mpc</Filter>
     </ClCompile>
+    <ClCompile Include="lval.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mpc\mpc.h">
       <Filter>Header Files\mpc</Filter>
+    </ClInclude>
+    <ClInclude Include="lval.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
