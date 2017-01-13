@@ -10,7 +10,8 @@ enum {
 	LVAL_NUM,
 	LVAL_ERR,
 	LVAL_SYM,
-	LVAL_SEXPR
+	LVAL_SEXPR,
+	LVAL_QEXPR
 };
 
 typedef struct lval{
@@ -28,6 +29,7 @@ lval* lval_num(long x);
 lval* lval_err(char* m);
 lval* lval_sym(char* s);
 
+lval* lval_qexpr(void);
 lval* lval_sexpr(void);
 void lval_del(lval* v);
 
@@ -39,7 +41,7 @@ lval* lval_read(mpc_ast_t* t);
 lval* lval_add(lval* self, lval* x);
 lval* lval_pop(lval* self, int i);
 lval* lval_take(lval* self, int i);
-
+lval* lval_join(lval* x, lval* y);
 
 // print
 void lval_print(lval* v);

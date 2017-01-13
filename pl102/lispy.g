@@ -1,5 +1,7 @@
 number   : /-?[0-9]+/ ;
-symbol   : '+' | '-' | '*' | '/';
+symbol   : '+' | '-' | '*' | '/' 
+		  | "list" | "head" | "tail" | "join" | "eval";
 sexpr    : '(' <expr>* ')';
-expr     : <number> | <symbol> | <sexpr>;
+qexpr    : '{' <expr>* '}';
+expr     : <number> | <symbol> | <sexpr> | <qexpr>;
 lispy    : /^/ <expr>+ /$/;
