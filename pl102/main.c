@@ -38,52 +38,50 @@ int number_of_nodes(mpc_ast_t* t) {
 }
 
 
-lval eval(mpc_ast_t* t) {
-	if (strstr(t->tag, "number")) {
-		errno = 0;
-		long x = strtol(t->contents, NULL, 10);
-		return errno != ERANGE ? lval_num(x) : lval_err(LERR_BAD_NUM);
-	}
-
-	char* op = t->children[1]->contents;
-	lval x = eval(t->children[2]);
-	
-	int i = 3;
-	while (strstr(t->children[i]->tag, "expr")) {
-		x = eval_op(x, op, eval(t->children[i]));
-		i++;
-	}
-	return x;
-}
-
-
 int main(int argc, char** argv) {
 	mpc_parser_t* Number = mpc_new("number");
-	mpc_parser_t* Operator = mpc_new("operator");
+	mpc_parser_t* Symbol = mpc_new("symbol");
+	mpc_parser_t* Sexpr = mpc_new("sexpr");
 	mpc_parser_t* Expr = mpc_new("expr");
 	mpc_parser_t* Lispy = mpc_new("lispy");
 
 	const char *grammar = readfile("lispy.g");
-	mpca_lang(MPCA_LANG_DEFAULT, grammar, Number, Operator, Expr, Lispy);
+	mpca_lang(MPCA_LANG_DEFAULT, grammar, 
+		Number, Symbol, Sexpr, Expr, Lispy);
 
 
 	puts("Lispy Version 0.0.0.0.1");
-	puts("Press Ctrl+c or Enter 'exit' to Exit\n");
+	printf(
+"Press Ctrl+c or Enter 'exit' to Exit\n\
+ enter :d+ show debug  \n\
+ enter :d- close_debug \n                ");
 	
 	mpc_result_t r;
+	int show_tree = 0;
 
 	while (1) {
 		char* input = readline("lispy>");
 		add_history(input);
-		//printf("No you're a %s", input);
-		if (stricmp(input, "exit") == 0) {
+		if (stricmp(input, ":exit") == 0) {
 			break;
 		}
-
+		if (stricmp(input, ":d+") == 0) {
+			show_tree = 1;
+			continue;
+		}
+		if (stricmp(input, ":d-") == 0) {
+			show_tree = 0;
+			continue;
+		}
+		
 		if (mpc_parse("<stdin>", input, Lispy, &r)) {
-			//mpc_ast_print(r.output);
-			lval result = eval(r.output);
-			lval_println(result);
+			lval* tree = lval_read(r.output);
+			if (show_tree) {
+				lval_println(tree);
+			}
+			lval* x = lval_eval(tree);
+			lval_println(x);
+			lval_del(x);
 			mpc_ast_delete(r.output);
 		}
 		else
@@ -94,7 +92,7 @@ int main(int argc, char** argv) {
 		free(input);
 	}
 
-	mpc_cleanup(4, Number, Operator, Expr, Lispy);
+	mpc_cleanup(4, Number, Symbol, Sexpr, Expr, Lispy);
 	free(grammar);
 	return 0;
 }

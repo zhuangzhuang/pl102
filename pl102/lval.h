@@ -1,30 +1,53 @@
 #pragma once
 
+#include "mpc\mpc.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum {
 	LVAL_NUM,
-	LVAL_ERR
+	LVAL_ERR,
+	LVAL_SYM,
+	LVAL_SEXPR
 };
 
-enum {
-	LERR_DIV_ZERO,
-	LERR_BAD_OP,
-	LERR_BAD_NUM
-};
-
-
-typedef struct {
+typedef struct lval{
 	int type;
 	long num;
-	int err;
+	char* err;
+	char* sym;
+
+	int count;
+	struct lval** cell;
 } lval;
 
 
-lval lval_num(long x);
+lval* lval_num(long x);
+lval* lval_err(char* m);
+lval* lval_sym(char* s);
 
-lval lval_err(int x);
+lval* lval_sexpr(void);
+void lval_del(lval* v);
 
-void lval_print(lval v);
 
-void lval_println(lval v);
+// build
+lval* lval_read(mpc_ast_t* t);
 
-lval eval_op(lval x, char* op, lval y);
+// methods
+lval* lval_add(lval* self, lval* x);
+lval* lval_pop(lval* self, int i);
+lval* lval_take(lval* self, int i);
+
+
+// print
+void lval_print(lval* v);
+void lval_println(lval* v);
+
+// eval
+lval* lval_eval(lval* v);
+
+#ifdef __cplusplus
+}
+#endif

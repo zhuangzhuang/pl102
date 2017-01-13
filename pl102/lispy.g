@@ -1,4 +1,5 @@
 number   : /-?[0-9]+/ ;
-operator : '+' | '-' | '*' | '/';
-expr     : <number> | '(' <operator> <expr>+ ')';
-lispy    : /^/ <operator> <expr>+ /$/;
+symbol   : '+' | '-' | '*' | '/';
+sexpr    : '(' <expr>* ')';
+expr     : <number> | <symbol> | <sexpr>;
+lispy    : /^/ <expr>+ /$/;
