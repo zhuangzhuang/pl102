@@ -60,6 +60,9 @@ int main(int argc, char** argv) {
 	mpc_result_t r;
 	int show_tree = 0;
 
+	lenv* e = lenv_new();
+	lenv_add_builtins(e);
+
 	while (1) {
 		char* input = readline("lispy>");
 		add_history(input);
@@ -80,7 +83,7 @@ int main(int argc, char** argv) {
 			if (show_tree) {
 				lval_println(tree);
 			}
-			lval* x = lval_eval(tree);
+			lval* x = lval_eval(e, tree);
 			lval_println(x);
 			lval_del(x);
 			mpc_ast_delete(r.output);
@@ -92,7 +95,7 @@ int main(int argc, char** argv) {
 		}
 		free(input);
 	}
-
+	lenv_del(e);
 	mpc_cleanup(4, Number, Symbol, Sexpr, Qexpr, Expr, Lispy);
 	free(grammar);
 	return 0;
